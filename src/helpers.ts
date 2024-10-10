@@ -15,3 +15,8 @@ export const fetchData = (key: string): any => {
 
     return null; // Return null if the item does not exist
 };
+
+// delete item
+export const deleteItem = ({key} : {key: any}) => {
+    return localStorage.removeItem(key);
+}
