@@ -40,3 +40,9 @@ const generateRandomColor = () => {
 
     return `${existingBudgetLength * 34} 65% 50%`;  // hue, saturation, lightness
 }
+
+export const wait = () => {
+    return new Promise((res) => {
+        setTimeout(res, Math.random() * 2000);
+    });
+}
