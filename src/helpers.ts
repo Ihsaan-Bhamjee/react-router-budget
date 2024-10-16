@@ -35,6 +35,20 @@ export const createBudget = ({name, amount} : {name: string, amount: number}) =>
     return localStorage.setItem("budgets", JSON.stringify([...existingBudgets, newItem]))
 }
 
+// create expense
+export const createExpense = ({name, amount, budgetId} : {name: string, amount: number, budgetId: number}) => {
+    const newItem = {
+        id: crypto.randomUUID(),
+        name: name,
+        createdAt: Date.now(),
+        amount: +amount,
+        budgetId: budgetId,
+    }
+
+    const existingExpenses = fetchData("expenses") ?? [];
+    return localStorage.setItem("expenses", JSON.stringify([...existingExpenses, newItem]))
+}
+
 const generateRandomColor = () => {
     const existingBudgetLength = fetchData("budgets")?.length ?? 0;
 
