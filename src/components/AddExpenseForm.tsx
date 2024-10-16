@@ -1,6 +1,7 @@
 import { useFetcher } from "react-router-dom";
 import { BudgetsModel } from "../models/BudgetsModel";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 interface AddExpenseFormProps {
     budgets: BudgetsModel[];  // Define props type for budgets
@@ -8,9 +9,17 @@ interface AddExpenseFormProps {
   
 const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ budgets }) => {
     const fetcher = useFetcher();
+    const isSubmitting = fetcher.state === "submitting";
     const formRef = useRef<HTMLInputElement | null>(null);;
     const focusRef = useRef<HTMLInputElement | null>(null);;
 
+    useEffect(() => {
+        if (!isSubmitting) {
+            formRef.current?.reset();
+            focusRef.current?.focus();
+        }
+    }, [isSubmitting])
+    
     return (
         <div className="form-wrapper">
             <h2 className="h3">
@@ -64,6 +73,17 @@ const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ budgets }) => {
                         }
                     </select>
                 </div>
+                <input type="hidden" name="_action" value={"createExpense"} />
+                <button type="submit" className="btn btn--dark" disabled={isSubmitting}>
+                    {
+                        isSubmitting 
+                            ? <span>Submitting</span>
+                            : <>
+                                <span>Add Expense</span>
+                                <PlusCircleIcon width={20} />
+                            </>
+                    }
+                </button>
             </fetcher.Form>
         </div>
     );
