@@ -3,16 +3,12 @@ import { createBudget, fetchData, wait } from "../helpers";
 import Intro from "../components/Intro";
 import { toast } from "react-toastify";
 import AddBudgetForm from "../components/AddBudgetForm";
+import { BudgetsModel } from "../models/BudgetsModel";
+import AddExpenseForm from "../components/AddExpenseForm";
 
 interface DashboardLoaderData {
     userName: string;
-    budgets: {
-        id: string,
-        name: string,
-        createdAt: Date,
-        amount: number,
-        color: string,
-    }[];
+    budgets: BudgetsModel[];
 }
 
 export function dashboardLoader(): DashboardLoaderData {
@@ -64,6 +60,9 @@ const Dashboard = () => {
                                     <div className="grid-lg">
                                         <div className="flex-lg">
                                             <AddBudgetForm />
+                                            <AddExpenseForm 
+                                                budgets={budgets}
+                                            />
                                         </div>
                                     </div>
                                 :
