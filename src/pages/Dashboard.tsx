@@ -6,7 +6,13 @@ import AddBudgetForm from "../components/AddBudgetForm";
 
 interface DashboardLoaderData {
     userName: string;
-    budgets: number;
+    budgets: {
+        id: string,
+        name: string,
+        createdAt: Date,
+        amount: number,
+        color: string,
+    }[];
 }
 
 export function dashboardLoader(): DashboardLoaderData {
@@ -44,7 +50,7 @@ export const dashboardAction = async ({request} : {request: Request}) => {
 }
 
 const Dashboard = () => {
-    const { userName } = useLoaderData() as DashboardLoaderData
+    const { userName, budgets } = useLoaderData() as DashboardLoaderData
     return (
         <>
             {userName ? 
@@ -52,11 +58,22 @@ const Dashboard = () => {
                     <div className="dashboard">
                         <h1>Welcome back, <span className="accent">{userName}</span></h1>
                         <div className="grid-sm">
-                            <div className="grid-lg">
-                                <div className="flex-lg">
-                                    <AddBudgetForm />
-                                </div>
-                            </div>
+                            {
+                                budgets && budgets.length > 0
+                                ?
+                                    <div className="grid-lg">
+                                        <div className="flex-lg">
+                                            <AddBudgetForm />
+                                        </div>
+                                    </div>
+                                :
+                                    <div className="grid-sm">
+                                        <p>Personal budgeting is the secret to financial freedom.</p>
+                                        <p>Create a budget to get started!</p>
+                                        <AddBudgetForm />
+                                    </div>
+                                    
+                            }
                         </div>
                     </div>
                 ) : <Intro/> 
