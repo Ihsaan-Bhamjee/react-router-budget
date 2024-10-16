@@ -1,7 +1,7 @@
-export interface BudgetsModel {
+export interface ExpenseModel {
     id: string;
     name: string;
     createdAt: number;
     amount: number;
-    color: string;
+    budgetId: string;
 }

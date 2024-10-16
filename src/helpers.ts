@@ -1,5 +1,8 @@
+import { BudgetsModel } from "./models/BudgetsModel";
+import { ExpenseModel } from "./models/ExpenseModel";
+
 // local storage
-export const fetchData = (key: string): any => {
+export const fetchData = (key: string) => {
     const item = localStorage.getItem(key);
 
     // If the item exists, try to parse it, otherwise return null
@@ -17,13 +20,13 @@ export const fetchData = (key: string): any => {
 };
 
 // delete item
-export const deleteItem = ({key} : {key: any}) => {
+export const deleteItem = ({key} : {key: string}) => {
     return localStorage.removeItem(key);
 }
 
 // create budget
 export const createBudget = ({name, amount} : {name: string, amount: number}) => {
-    const newItem = {
+    const newItem: BudgetsModel = {
         id: crypto.randomUUID(),
         name: name,
         createdAt: Date.now(),
@@ -36,8 +39,8 @@ export const createBudget = ({name, amount} : {name: string, amount: number}) =>
 }
 
 // create expense
-export const createExpense = ({name, amount, budgetId} : {name: string, amount: number, budgetId: number}) => {
-    const newItem = {
+export const createExpense = ({name, amount, budgetId} : {name: string, amount: number, budgetId: string}) => {
+    const newItem: ExpenseModel = {
         id: crypto.randomUUID(),
         name: name,
         createdAt: Date.now(),
@@ -58,5 +61,37 @@ const generateRandomColor = () => {
 export const wait = () => {
     return new Promise((res) => {
         setTimeout(res, Math.random() * 2000);
+    });
+}
+
+// total spent by budget
+export const calculateSpentByBudget = (budgetId: string) => {
+    const expenses = fetchData("expenses") ?? [];
+    const budgetSpent = expenses.reduce((acc: number, expense: ExpenseModel) => {
+        // check if expenses.id === budgetId
+        if (expense.budgetId !== budgetId) {
+            return acc;
+        }
+        // add current amount to total
+        return acc += expense.amount;
+    }, 0);
+
+    return budgetSpent;
+}
+
+// Formatting
+
+// Format Currency
+export const formatCurrency = (amount: number) => {
+    return amount.toLocaleString(undefined, {
+        style: "currency",
+        currency: "ZAR",
+    });
+}
+
+export const formatPercentage = (amount: number) => {
+    return amount.toLocaleString(undefined, {
+        style: "percent",
+        minimumFractionDigits: 0,
     });
 }

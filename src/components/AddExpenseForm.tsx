@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
 
 interface AddExpenseFormProps {
-    budgets: BudgetsModel[];  // Define props type for budgets
+    budgets: BudgetsModel[];
 }
   
 const AddExpenseForm: React.FC<AddExpenseFormProps> = ({ budgets }) => {
